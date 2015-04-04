@@ -1,4 +1,4 @@
-package com.example.stefan.darts4dudes;
+package com.heidescrimeproducts.darts4dudes;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;

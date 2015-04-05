@@ -3,4 +3,7 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="button_new_game">New Game</string>
+    <string name="button_show_statistics">Show statistics</string>
+    <string name="text_title">Darts 4 Dudes!</string>
 </resources>

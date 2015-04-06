@@ -2,6 +2,7 @@ package com.heidescrimeproducts.darts4dudes;
 
 import java.util.ArrayList;
 import java.util.UUID;
+import java.util.HashMap;
 
 /**
  * Created by tak3r07 on 4/5/15. This class represents a player of a game. A player has a list of
@@ -15,8 +16,8 @@ public class Player {
     private String name;
 
     /**
-     * Constructor for Player
-     * Leave uuid NULL if player is new
+     * Constructor for Player Leave uuid NULL if player is new
+     *
      * @param matches
      * @param name
      * @param uuid
@@ -46,13 +47,41 @@ public class Player {
         return name;
     }
 
-    public void addMatch(Match match){
+    public void addMatch(Match match) {
         this.matches.add(match);
     }
 
-    public double getAverage(){
+
+    /**
+     * Calculates 3-Dart-average over all played match of this player
+     * @return 3-Dart-average as double
+     */
+    public double get3DartAverage() {
         //TODO: Calculate average over all Matches
-        return 0;
+
+
+        ArrayList<String> allShots = new ArrayList<>();
+        //Get all shots from all matches and all legs
+        for (Match match : matches) {
+            ArrayList<Leg> playedLegs = match.getLegsByPlayer(this);
+            for (Leg leg : playedLegs) {
+                for(String shot : leg.getShots()){
+                    allShots.add(shot);
+                }
+            }
+        }
+
+        //Calculate average of all shots
+        double average = 0;
+
+
+        for(String shot : allShots){
+            average += ShotAnalyzer.shotStringToInt(shot);
+        }
+
+        average = average / allShots.size();
+
+        return average;
     }
 
 }

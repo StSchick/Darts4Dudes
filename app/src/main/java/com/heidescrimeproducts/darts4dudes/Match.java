@@ -86,4 +86,27 @@ public class Match {
         return this.date;
     }
 
+    public HashMap<Leg, Player> getLegs() {
+        return legs;
+    }
+
+    /**
+     * Search for all legs played by a specific player
+     * @param player
+     * @return
+     */
+    public ArrayList<Leg> getLegsByPlayer(Player player){
+        //Initialize new ArrayList of legs
+        ArrayList<Leg> playerLegs = new ArrayList<>();
+
+        //Iterate over all legs of this match
+        for(Leg leg : this.legs.keySet()){
+            //Check if leg was played by searched player and add leg
+            if (player.getUuid().equals(this.legs.get(leg).getUuid())){
+                playerLegs.add(leg);
+            }
+        }
+
+        return playerLegs;
+    }
 }

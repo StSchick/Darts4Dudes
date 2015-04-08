@@ -24,6 +24,9 @@ public class GameActivity extends ActionBarActivity {
     ShotAdapter<String> shotAdapter2;
     ArrayList<String> shots1;
     ArrayList<String> shots2;
+    int player1Points;
+    int player2Points;
+    String currentPlayer;
 
 
     @Override
@@ -141,13 +144,13 @@ public class GameActivity extends ActionBarActivity {
 
                     //Count ","
                     int count = 0;
-                    while(tempString.contains(",")) {
+                    while (tempString.contains(",")) {
                         tempString = tempString.replaceFirst(",", "");
                         count++;
                     }
 
                     //If there are already 2 throws -> do not append a "," after the third one
-                    if(count < 2) {
+                    if (count < 2) {
                         stringBuilder.append(",");
                     }
 
@@ -156,15 +159,63 @@ public class GameActivity extends ActionBarActivity {
                     editText.setText(newString);
                 }
             });
+
+            TextView tvPlayer1Points = (TextView) findViewById(R.id.textView_player1_points);
+            TextView tvPlayer2Points = (TextView) findViewById(R.id.textView_player2_points);
+
+            player1Points = 501;
+            player2Points = 501;
+
+            tvPlayer1Points.setText(String.valueOf(player1Points));
+            tvPlayer2Points.setText(String.valueOf(player2Points));
+
+            currentPlayer = "player1";
         }
     }
 
-    public void addShot(View view){
+    public void addShot(View view) {
         final EditText editText = (EditText) findViewById(R.id.editText_virtual_keyboard);
         String shot = editText.getText().toString();
         Log.i("MYLOGGER", shot);
 
-        shots1.add(shot);
-        shotAdapter1.notifyDataSetChanged();
+        //Reset text
+        editText.setText("");
+
+        //calcs
+        int shotInt = ShotAnalyzer.shotStringToInt(shot);
+
+        //Get pointsviews
+        TextView tvPlayer1Points = (TextView) findViewById(R.id.textView_player1_points);
+        TextView tvPlayer2Points = (TextView) findViewById(R.id.textView_player2_points);
+
+        //Set new score
+        if (this.currentPlayer.equals("player1")) {
+            int currentPoints = Integer.parseInt(tvPlayer1Points.getText().toString());
+            int newPoints = currentPoints - shotInt;
+
+            if (newPoints < 0) newPoints = 0;
+             tvPlayer1Points.setText(String.valueOf(newPoints));
+
+            //add shot
+            shots1.add(shot);
+            shotAdapter1.notifyDataSetChanged();
+
+            //Switch player
+            currentPlayer = "player2";
+
+        } else {
+            int currentPoints = Integer.parseInt(tvPlayer2Points.getText().toString());
+            int newPoints = currentPoints - shotInt;
+
+            if (newPoints < 0) newPoints = 0;
+            tvPlayer2Points.setText(String.valueOf(newPoints));
+
+            //Add shot
+            shots2.add(shot);
+            shotAdapter2.notifyDataSetChanged();
+
+            currentPlayer = "player1";
+        }
+
     }
 }
